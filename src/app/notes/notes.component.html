@@ -1,0 +1,129 @@
+<div>
+  <strong>Filtrer par étiquette :</strong>
+  <button (click)="setTagFilter(null)" [disabled]="!activeTagFilter">
+    Tout afficher
+  </button>
+
+  <button
+    *ngFor="let tag of tags"
+    (click)="setTagFilter(tag.id)"
+    [style.color]="activeTagFilter === tag.id ? 'white' : tag.color"
+    [style.backgroundColor]="activeTagFilter === tag.id ? tag.color : 'transparent'"
+    style="margin: 0 5px; border: 1px solid; padding: 2px 5px; border-radius: 5px;"
+  >
+    {{ tag.name }}
+  </button>
+</div>
+
+<hr />
+
+<h2 *ngIf="!editing">Ajouter une nouvelle note</h2>
+<h2 *ngIf="editing">Modifier la note</h2>
+
+<form (submit)="createOrUpdateNote()">
+  <label>
+    Titre :
+    <input type="text" [(ngModel)]="newNote.title" name="title" required />
+  </label>
+  <br />
+
+  <!-- 🆕 Choix du type -->
+  <label>
+    Type :
+    <select [(ngModel)]="newNote.type" name="type">
+      <option value="text">Texte</option>
+      <option value="checklist">Checklist</option>
+    </select>
+  </label>
+  <br />
+
+  <!-- 🧾 Contenu si type = text -->
+  <div *ngIf="newNote.type === 'text'">
+    <label>
+      Contenu :
+      <textarea [(ngModel)]="newNote.content" name="content"></textarea>
+    </label>
+    <br />
+  </div>
+
+  <!-- ☑️ Checklist -->
+  <div *ngIf="newNote.type === 'checklist'">
+    <label>
+      Nouvelle tâche :
+      <input [(ngModel)]="newChecklistItem" name="checkItem" />
+      <button type="button" (click)="addChecklistItem()">Ajouter</button>
+    </label>
+    <ul>
+      <li *ngFor="let item of newNote.checklist; let i = index">
+        <input type="checkbox" [(ngModel)]="item.checked" [name]="'check' + i" />
+        {{ item.label }}
+        <button type="button" (click)="removeChecklistItem(i)">🗑</button>
+      </li>
+    </ul>
+  </div>
+
+  <label>
+    Couleur du texte :
+    <input type="color" [(ngModel)]="newNote.textColor" name="textColor" />
+  </label>
+  <br /><br />
+
+  <div>
+    <label *ngFor="let tag of tags" style="margin-right: 10px;">
+      <input
+        type="checkbox"
+        [checked]="newNote.tags.includes(tag.id)"
+        (change)="toggleTag(tag.id)"
+      />
+      <span [style.color]="tag.color">{{ tag.name }}</span>
+    </label>
+  </div>
+  <br />
+
+  <button type="submit">
+    {{ editing ? 'Mettre à jour' : 'Ajouter la note' }}
+  </button>
+
+  <button *ngIf="editing" type="button" (click)="resetForm()">Annuler</button>
+</form>
+
+<hr />
+
+<h2>Mes notes</h2>
+
+<ul>
+  <li *ngFor="let note of filteredNotes">
+    <h3 [style.color]="note.textColor">{{ note.title }}</h3>
+
+    
+    <div *ngIf="note.type === 'text'">
+      <p [style.color]="note.textColor">{{ note.content }}</p>
+    </div>
+    <div *ngIf="note.type === 'checklist'">
+      <ul>
+        <li *ngFor="let item of note.checklist">
+          <input type="checkbox" [checked]="item.checked" disabled />
+          {{ item.label }}
+        </li>
+      </ul>
+    </div>
+
+    <small>Créée le {{ note.createdAt | date:'medium' }}</small>
+
+    <p *ngIf="note.tags.length > 0">
+      Étiquettes :
+      <span *ngFor="let tagId of note.tags">
+        <ng-container *ngIf="getTagById(tagId) as tag">
+          <span [style.color]="tag.color">{{ tag.name }}</span>
+        </ng-container>
+        &nbsp;
+      </span>
+    </p>
+
+    <button (click)="editNote(note)">Modifier</button>
+    <button (click)="deleteNote(note.id)">Supprimer</button>
+    <hr />
+  </li>
+</ul>
+
+<p *ngIf="filteredNotes.length === 0">Aucune note pour le moment.</p>

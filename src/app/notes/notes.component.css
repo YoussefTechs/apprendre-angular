@@ -1,0 +1,93 @@
+
+div {
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  
+  a {
+    display: inline-block;
+    margin: 10px 0;
+    color: #007BFF;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  a:hover {
+    text-decoration: none;
+    color: #0056b3;
+  }
+  
+  
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px;
+  }
+  
+  li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  
+  app-tag {
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  
+  
+  button {
+    background-color: #ff4d4d;
+    border: none;
+    padding: 6px 10px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  button:hover {
+    background-color: #cc0000;
+  }
+  
+  
+  form {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="color"] {
+    padding: 5px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  form button {
+    margin-right: 10px;
+    background-color: #28a745;
+  }
+  
+  form button:hover {
+    background-color: #218838;
+  }
+  
+  
+  li:only-child {
+    color: #888;
+    font-style: italic;
+  }
+  

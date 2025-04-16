@@ -1,0 +1,45 @@
+<div>
+  
+  <a (click)="startEditing({ id: null, name: '', color: '#FFFFFF' })"
+     style="cursor: pointer; color: blue; text-decoration: underline;">
+    Ajouter une nouvelle étiquette
+  </a>
+
+  <div>
+    <ul>
+      <li *ngFor="let tag of tags">
+        <app-tag
+          [id]="tag.id"
+          [name]="tag.name"
+          [color]="tag.color"
+          (dblclick)="startEditing(tag)">
+        </app-tag>
+
+        
+        <button (click)="deleteTag(tag)">Supprimer</button>
+      </li>
+
+     
+      <li *ngIf="tags.length === 0">Aucun tag !</li>
+    </ul>
+  </div>
+
+  
+  <form *ngIf="editing" (submit)="saveTag()">
+    <label>
+      Nom :
+      <input type="text" [(ngModel)]="editing.name" name="name" required />
+    </label>
+    <label>
+      Couleur :
+      <input type="color" [(ngModel)]="editing.color" name="color" />
+    </label>
+    <button type="submit">Valider</button>
+    <button type="button" (click)="cancelEditing()">Annuler</button>
+  </form>
+
+  
+  <a (click)="dialogAddTag()" style="cursor: pointer; color: blue; text-decoration: underline;">
+    Ajouter une nouvelle étiquette
+  </a>
+</div>
